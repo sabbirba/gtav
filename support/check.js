@@ -18,12 +18,12 @@ async function check() {
       report.storageQuotaMB = estimate ? Math.round(estimate.quota / 1048576) : 'not reported';
     } catch { report.storageCheck = 'unavailable'; }
     if (!report.wasmMemory64) throw new Error('WebAssembly Memory64 is unavailable. Update to current Chrome or Edge.');
-    const response = await fetch('/', { cache: 'no-store' });
+    const response = await fetch('/index.html', { cache: 'no-store' });
     report.pageHTTP = response.status;
     const html = await response.text();
     const build = html.match(/\/b\/([a-zA-Z0-9_-]+)\//);
     if (build) {
-      const wasm = await fetch(`/b/${build[1]}/game.wasm`, { headers: { Range: 'bytes=0-3' } });
+      const wasm = await fetch(`/b/${build[1]}/game.wasm`, { headers: { Range: 'bytes=0-3' }, cache: 'no-store' });
       report.wasmHTTP = wasm.status;
       if (wasm.status === 206) {
         report.wasmSignature = Array.from(new Uint8Array(await wasm.arrayBuffer())).join(',') === '0,97,115,109';
