@@ -1,12 +1,10 @@
 services:
   app:
-    image: python:3.12-slim
+    image: nginx:alpine
     restart: unless-stopped
-    working_dir: /app
-    command: ["sh", "entrypoint.sh"]
     volumes:
-      - .:/app
-      - /data/gtav_assets:/app/mirror
+      - /data/gtav_assets/web-output:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     expose:
       - "8000"
     labels:
