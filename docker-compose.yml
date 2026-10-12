@@ -1,0 +1,18 @@
+services:
+  app:
+    image: python:3.12-slim
+    restart: unless-stopped
+    working_dir: /app
+    command: ["sh", "entrypoint.sh"]
+    volumes:
+      - .:/app
+      - /data/gtav_assets:/app/mirror
+    expose:
+      - "8000"
+    networks:
+      - dokploy-network
+      - default
+
+networks:
+  dokploy-network:
+    external: true
