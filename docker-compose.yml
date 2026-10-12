@@ -9,6 +9,19 @@ services:
       - /data/gtav_assets:/app/mirror
     expose:
       - "8000"
+    labels:
+      - traefik.docker.network=dokploy-network
+      - traefik.http.routers.personal-gtav-cpbp6l-39-web.rule=Host(`gtav.preconnect.app`)
+      - traefik.http.routers.personal-gtav-cpbp6l-39-web.entrypoints=web
+      - traefik.http.services.personal-gtav-cpbp6l-39-web.loadbalancer.server.port=8000
+      - traefik.http.routers.personal-gtav-cpbp6l-39-web.service=personal-gtav-cpbp6l-39-web
+      - traefik.http.routers.personal-gtav-cpbp6l-39-web.middlewares=redirect-to-https@file
+      - traefik.http.routers.personal-gtav-cpbp6l-39-websecure.rule=Host(`gtav.preconnect.app`)
+      - traefik.http.routers.personal-gtav-cpbp6l-39-websecure.entrypoints=websecure
+      - traefik.http.services.personal-gtav-cpbp6l-39-websecure.loadbalancer.server.port=8000
+      - traefik.http.routers.personal-gtav-cpbp6l-39-websecure.service=personal-gtav-cpbp6l-39-websecure
+      - traefik.http.routers.personal-gtav-cpbp6l-39-websecure.tls.certresolver=letsencrypt
+      - traefik.enable=true
     networks:
       - dokploy-network
       - default
