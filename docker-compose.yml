@@ -8,6 +8,12 @@ services:
       - ./main_nginx.conf:/etc/nginx/nginx.conf:ro
     expose:
       - "8000"
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "8000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
     labels:
       - traefik.docker.network=dokploy-network
       - traefik.http.routers.personal-gtav-cpbp6l-39-web.rule=Host(`game.preconnect.app`)
